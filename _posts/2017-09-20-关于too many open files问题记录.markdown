@@ -4,7 +4,7 @@ title:      "too many open files 问题记录"
 subtitle:   "排查和参数调整的方法"
 date:       2017-09-20
 author:     "BENJAMIN"
-header-img: "img/toomanyopenfileserror.jpg"
+header-img: ""
 tags:
     - 服务器相关
     - linux  
