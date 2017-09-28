@@ -76,7 +76,7 @@ sidebar-about-description: "写点前端，写点后端，搞点设计"
 
 # Featured Tags
 featured-tags: true                     # whether or not using Feature-Tags
-featured-condition-size: 5             # A tag will be featured if the size of it is more than this condition value
+featured-condition-size: 2             # A tag will be featured if the size of it is more than this condition value
 
 
 
