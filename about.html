@@ -125,3 +125,28 @@ header-img: "img/about-bg.jpg"
 </script>
 <!-- disqus 公共JS代码 end -->
 {% endif %}
+
+
+
+  <!-- gitment 评论框 start -->
+<div id="container"></div>
+   <!-- gitment 评论框 end -->
+  
+<link rel="stylesheet" href="https://imsun.github.io/gitment/style/default.css">
+<script src="https://imsun.github.io/gitment/dist/gitment.browser.js"></script>
+<script>
+alert(1)
+var gitment = new Gitment({
+  //id: '页面 ID', // 可选。默认为 location.href
+  owner: 'ambluse',
+  repo: 'blogrepo',
+  oauth: {
+    client_id: '427e43187aada8968e6a',
+    client_secret: 'b0f368f434a03df9f9d77a6ae9c175baf8c4fc68',
+  },
+})
+gitment.render('container')
+</script>
+
+
+

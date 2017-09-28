@@ -1,9 +1,9 @@
 # Site settings
-title: BENJAMIN'S 笔记
-SEOTitle: Benjamin | BENJAMIN'S 笔记
+title: BENJAMIN BLOG
+SEOTitle: BENJAMIN BLOG
 header-img: img/home-bg.jpg
 email: ambluse@163.com
-description: ""
+description: "工作学习中的一些笔记和总结"
 keyword: ""
 url: auto            # your host, for absolute URL
 baseurl: ""         # for example, '/blog' if your blog hosted on 'host/blog'
@@ -50,10 +50,11 @@ kramdown:
 #disqus_username: _your_disqus_short_name_
 
 # Duoshuo settings
-duoshuo_username: huxblog
+#duoshuo_username: huxblog
 # Share component is depend on Comment so we can NOT use share only.
-duoshuo_share: true                     # set to false if you want to use Comment without Sharing
+#duoshuo_share: true                     # set to false if you want to use Comment without Sharing
 
+site.gitment: true
 
 
 
@@ -69,32 +70,20 @@ ga_domain: ambluse.github.io
 # Sidebar settings
 sidebar: true                           # whether or not using Sidebar.
 sidebar-about-description: "写点前端，写点后端，搞点设计"
-sidebar-avatar: /img/avatar-hux.jpg      # use absolute URL, seeing it's used in both `/` and `/about/`
+#sidebar-avatar: /img/avatar-hux.jpg      # use absolute URL, seeing it's used in both `/` and `/about/`
 
 
 
 # Featured Tags
 featured-tags: true                     # whether or not using Feature-Tags
-featured-condition-size: 1              # A tag will be featured if the size of it is more than this condition value
+featured-condition-size: 5             # A tag will be featured if the size of it is more than this condition value
 
 
 
 # Friends
 friends: [
     {
-        title: "Hux Blog",
+        title: "benjamin's github",
         href: "http://ambluse.github.io"
-    },{
-        title: "Foo",
-        href: "#"
-    },{
-        title: "Bar",
-        href: "#"
-    },{
-        title: "Example Friends",
-        href: "#"
-    },{
-        title: "It helps SEO",
-        href: "#"
     }
 ]

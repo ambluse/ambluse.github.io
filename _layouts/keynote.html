@@ -49,7 +49,6 @@ layout: default
 <article>
     <div class="container">
         <div class="row">
-
             <!-- Post Container -->
             <div class="post-container
                 col-lg-8 col-lg-offset-2
@@ -119,6 +118,15 @@ layout: default
                 </div>
                 <!-- disqus 评论框 end -->
                 {% endif %}
+
+
+                 {% if site.gitment %}
+                <!-- gitment 评论框 start -->
+                <div id="container"></div>
+                <!-- gitment 评论框 end -->
+                {% endif %}
+            
+
 
             </div>
 
@@ -221,6 +229,26 @@ layout: default
 {% endif %}
 
 
+{% if site.gitment %}
+<link rel="stylesheet" href="https://imsun.github.io/gitment/style/default.css">
+<script src="https://imsun.github.io/gitment/dist/gitment.browser.js"></script>
+<script>
+alert(1)
+var gitment = new Gitment({
+  //id: '页面 ID', // 可选。默认为 location.href
+  owner: 'ambluse',
+  repo: 'blogrepo',
+  oauth: {
+    client_id: '427e43187aada8968e6a',
+    client_secret: 'b0f368f434a03df9f9d77a6ae9c175baf8c4fc68',
+  },
+})
+gitment.render('container')
+alert(2)
+</script>
+{% endif %}
+
+
 {% if site.anchorjs %}
 <!-- async load function -->
 <script>
@@ -256,3 +284,4 @@ layout: default
     }
 </style>
 {% endif %}
+
