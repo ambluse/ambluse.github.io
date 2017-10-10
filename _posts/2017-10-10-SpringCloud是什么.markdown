@@ -4,7 +4,7 @@ title:      "SpringCloud 是什么"
 subtitle:   ""
 date:       2017-10-10
 author:     "BENJAMIN"
-header-img: "img/post-bg-whatisspringcloud.png"
+header-img: "img/post-bg-whatisspringcloud.jpg"
 tags:
     - SpringCloud
    
