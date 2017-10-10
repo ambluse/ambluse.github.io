@@ -21,6 +21,7 @@ tags:
 创建一个maven项目
 
 或者通过start.spring.io来自动创建：
+![](https://github.com/ambluse/ambluse.github.io/blob/master/img/cloud-eureka-server-start-io.jpg)
 
 pom.xml 配置关键信息如下:
 
