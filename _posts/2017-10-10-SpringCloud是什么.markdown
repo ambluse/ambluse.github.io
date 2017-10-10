@@ -4,7 +4,7 @@ title:      "SpringCloud 是什么"
 subtitle:   ""
 date:       2017-10-10
 author:     "BENJAMIN"
-header-img: "https://spring.io/img/homepage/diagram-distributed-systems.svg"
+header-img: "img/post-bg-whatisspringcloud.png"
 tags:
     - SpringCloud
    
