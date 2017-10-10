@@ -11,331 +11,232 @@ tags:
 ---
 
 
-> 对工作中常用的一些linux命令整理，方便以后在线查看使用
+> 14年开始接触一些SOA的设计和框架（venus，dubbo），当时觉得服务化的项目又庞大有复杂门槛又高，只有一些比较特定的项目才适合去使用，结果过完15年微服务和SpringCloud就火遍了技术界，而且目前SpringCloud已经成为了微服务的事实标准，大大降低了系统服务化的门槛。
 
 ---
+ 
+
+# SpringCloud 简介
+
+**官方如是说：**
+> Spring Cloud provides tools for developers to quickly build some of the common patterns in distributed systems (e.g. configuration management, service discovery, circuit breakers, intelligent routing, micro-proxy, control bus, one-time tokens, global locks, leadership election, distributed sessions, cluster state). Coordination of distributed systems leads to boiler plate patterns, and using Spring Cloud developers can quickly stand up services and applications that implement those patterns. They will work well in any distributed environment, including the developer's own laptop, bare metal data centres, and managed platforms such as Cloud Foundry.
+> 
+> spring cloud 为开发人员提供了快速构建分布式系统的一些工具，包括配置管理、服务发现、断路器、路由、微代理、事件总线、全局锁、决策竞选、分布式会话等等。它运行环境简单，可以在开发人员的电脑上跑
 
+**上面提到的工具后续我们会一一了解**
 
-## 文件夹权限相关
 
-### 执行权限
+	Spring并没有重复制造轮子，它只是将目前各家公司开发的比较成熟、经得起实际考验的服务框架组合
+	起来，通过Spring Boot风格进行再封装屏蔽掉了复杂的配置和实现原理，最终给开发者留出了一套简
+	单易懂、易部署和易维护的分布式系统开发工具包。
 
-```
-chmod 777 *.sh
-```
+**关于微服务**
 
-### 修改文件夹所有者和组
+	微服务是可以独立部署、水平扩展、独立访问（或者有独立的数据库）的服务单元，SpringCloud就是
+	这些微服务的大管家，采用了微服务这种架构之后，项目的数量会非常多，SpringCloud做为大管家需
+	要管理好这些微服务，自然需要很多小弟来帮忙。
+	
+	计划后续专门整理一篇为什么要使用以及微服务解决了现在业务的哪些问题
 
-```
-chown -R *** /data
-chgrp -R *** /data
-```
+**那么有哪些小弟呢**
 
-### 删除30天前的文件
+	主要的小弟有：Spring Cloud Config、
+	Spring Cloud Netflix（Eureka、Hystrix、Zuul、Archaius…）、
+	Spring Cloud Bus、
+	Spring Cloud for Cloud Foundry、
+	Spring Cloud Cluster、
+	Spring Cloud Consul、
+	Spring Cloud Security、
+	Spring Cloud Sleuth、
+	Spring Cloud Data Flow、
+	Spring Cloud Stream、
+	Spring Cloud Task、
+	Spring Cloud Zookeeper、
+	Spring Cloud Connectors、
+	Spring Cloud Starters、
+	Spring Cloud CLI，
+	每个小弟身怀独门绝技武功高强下面来做一一介绍。
 
-```
- find /APPFile/tomcatlogs/ -mtime +30 -exec rm -rf {} \;
-```
+# 核心成员
 
-## 用户相关
+### Spring Cloud Netflix
+	
+	最重要的的核心成员，算是要实现微服务的必要不充分条件，它下面又有很多子项目都需要重点介绍：
+	Eureka, Hystrix, Zuul, feign… 
+	
+	
 
-### 创建
+**Netflix Eureka**
+	
+	服务中心，云端服务发现，一个基于 REST 的服务，用于定位服务，以实现云端中间层服务发现和故障
+	转移。这个可是springcloud最牛鼻的小弟，服务中心，任何小弟需要其它小弟支持什么都需要从这里
+	来拿，同样的你有什么独门武功的都赶紧过报道，方便以后其它小弟来调用；它的好处是你不需要直接找
+	各种什么小弟支持，只需要到服务中心来领取，也不需要知道提供支持的其它小弟在哪里，还是几个小弟
+	来支持的，反正拿来用就行，服务中心来保证稳定性和质量。
 
-```
-# useradd –d /usr/sam -m sam
+**Netflix Hystrix**
 
-此命令创建了一个用户sam，
-其中-d和-m选项用来为登录名sam产生一个主目录/usr/sam
-（/usr为默认的用户主目录所在的父目录）。
+	熔断器，容错管理工具，旨在通过熔断机制控制服务和第三方库的节点,从而对延迟和故障提供更强大的
+	容错能力。比如突然某个小弟生病了，但是你还需要它的支持，然后调用之后它半天没有响应，你却不知
+	道，一直在等等这个响应；有可能别的小弟也正在调用你的武功绝技，那么当请求多之后，就会发生严重
+	的阻塞影响老大的整体计划。这个时候Hystrix就派上用场了，当Hystrix发现某个小弟不在状态不稳
+	定立马马上让它下线，让其它小弟来顶上来，或者给你说不用等了这个小弟今天肯定不行，该干嘛赶紧干
+	嘛去别在这排队了。
 
-```
+**Netflix Zuul**
 
-### 改密码
+	Zuul 是在云平台上提供动态路由,监控,弹性,安全等边缘服务的框架。Zuul 相当于是设备和 
+	Netflix 流应用的 Web 网站后端所有请求的前门。当其它门派来找大哥办事的时候一定要先经过
+	zuul,看下有没有带刀子什么的给拦截回去，或者是需要找那个小弟的直接给带过去。
+	
+**Netflix Ribbon**
+	
+	客户端负载均衡的服务调用组件
 
-```
-如果是超级用户，可以用下列形式指定任何用户的口令：
-代码:
-# passwd sam
-```
+**Netflix Feign**
 
+	基于Ribbon和hystrix的声明式服务调用组件
 
-## 系统相关
+*Netflix Archaius*
 
-### 看系统位数
-```
-uname -a
-```
+	外部化配置组件。
+	
+	
+### Spring Cloud Config
+	
+	俗称的配置中心，配置管理工具包，让你可以把配置放到远程服务器，集中化管理集群配置，目前支
+	持本地存储、Git以及Subversion。就是以后大家武器、枪火什么的东西都集中放到一起，别随便
+	自己带，方便以后统一管理、升级装备。
 
-### 看系统版本
-```
-lsb_release -a
-```
 
-### iptables 生成文件 执行3个命令
-```
-iptables -P OUTPUT ACCEPT
-service iptables save
-service iptables restart
+### Spring Cloud Bus
 
-```
+	事件、消息总线，用于在集群（例如，配置变化事件）中传播状态变化，可与Spring Cloud Config
+	联合实现热部署。相当于水浒传中日行八百里的神行太保戴宗，确保各个小弟之间消息保持畅通。
 
-### 网络问题遇到：device eth0 does not seem to be present, delaying initialization
-```
-# vi /etc/sysconfig/network-scripts/ifcfg-eth0
-ifcfg-eth0的配置文件里保存了以前的MAC地址，
-就把这一行删除掉在重启网卡
+### *Spring Cloud for Cloud Foundry*
 
-# /etc/udev/rules.d/70-persistent-net.rules 
-删除后重启机器，因为这个文件绑定了网卡和mac地址，
-所以换了网卡以后MAC地址变了，所以不能正常启动，
-也可以直接编辑这个配置文件把里面的网卡和mac地址修改乘对应的，
-不过这样多麻烦，直接删除重启，它会自动生成个。
-```
+	Cloud Foundry是VMware推出的业界第一个开源PaaS云平台，它支持多种框架、语言、运行时环境、
+	云平台及应用服务，使开发人员能够在几秒钟内进行应用程序的部署和扩展，无需担心任何基础架构的问
+	题
 
-### 修改计算机名称
+	其实就是与CloudFoundry进行集成的一套解决方案，抱了Cloud Foundry的大腿。
 
-```
-1. # vi /etc/sysconfig/network
+### Spring Cloud Cluster
 
-2. # vi /etc/hosts
-将光标移动到 127.0.0.1 localhost 下面一行，
-使用命令 i 插入内容
-插入的内容为 例如：192.168.1.101 linux 
-其中 linux 为计算机名字
-修改完成后，输入命令 :wq 保存退出
+	Spring Cloud Cluster将取代Spring Integration。提供在分布式系统中的集群所需要的基础功
+	能支持，如：选举、集群的状态一致性、全局锁、tokens等常见状态模式的抽象和实现。
 
-3. # hostname 计算机名字 
-   回车（如 hostname linux）
-   
-```
+	如果把不同的帮派组织成统一的整体，Spring Cloud Cluster已经帮你提供了很多方便组织成统一的
+	工具。
 
-### JDK环境变量
+### Spring Cloud Consul
 
-**先解压：**  
+	Consul 是一个支持多数据中心分布式高可用的服务发现和配置共享的服务软件,由 HashiCorp 公司
+	用 Go 语言开发, 基于 Mozilla Public License 2.0 的协议进行开源. Consul 支持健康检
+	查,并允许 HTTP 和 DNS 协议调用 API 存储键值对.
 
-```
-# tar –xvf file.tar
+	Spring Cloud Consul 封装了Consul操作，consul是一个服务发现与配置工具，与Docker容器可
+	以无缝集成。
+	
+### Spring Cloud Security
 
-```
+	基于spring security的安全工具包，为你的应用程序添加安全控制。这个小弟很牛鼻专门负责整个帮
+	派的安全问题，设置不同的门派访问特定的资源，不能把秘籍葵花宝典泄漏了。
 
-**装java环境变量：**
+### Spring Cloud Sleuth
 
-```
-vi /etc/profile
-#jdk
-export JAVA_HOME=/usr/local/jdk1.8.0_66
-export JRE_HOME=/usr/local/jdk1.8.0_66/jre
-export CLASSPATH=.:$JAVA_HOME/lib/dt.jar:$JAVA_HOME/lib/tools.jar:$JRE_HOME/lib:$CLASSPATH
-export PATH=$JAVA_HOME/bin:$PATH
+	日志收集工具包，封装了Dapper和log-based追踪以及Zipkin和HTrace操作，为SpringCloud应用
+	实现了一种分布式追踪解决方案。
 
-wq 保存
+### Spring Cloud Data Flow
 
-source /etc/profile
+	Data flow 是一个用于开发和执行大范围数据处理其模式包括ETL，批量运算和持续运算的统一编程模
+	型和托管服务。
 
-```
+	对于在现代运行环境中可组合的微服务程序来说，Spring Cloud data flow是一个原生云可编配的服
+	务。使用Spring Cloud data flow，开发者可以为像数据抽取，实时分析，和数据导入/导出这种常
+	见用例创建和编配数据通道 （data pipelines）。
 
-### MySQL安装前卸载原有包
+	Spring Cloud data flow 是基于原生云对 spring XD的重新设计，该项目目标是简化大数据应用
+	的开发。Spring XD 的流处理和批处理模块的重构分别是基于 Spring Boot的stream 和 task/
+	batch 的微服务程序。这些程序现在都是自动部署单元而且他们原生的支持像 Cloud Foundry、
+	Apache YARN、Apache Mesos和Kubernetes 等现代运行环境。
 
-```
-1、查找以前是否装有mysql
-命令：rpm -qa|grep -i mysql
-可以看到mysql的两个包：
-mysql-4.1.12-3.RHEL4.1
-mysqlclient10-3.23.58-4.RHEL4.1
+	Spring Cloud data flow 为基于微服务的分布式流处理和批处理数据通道提供了一系列模型和最佳
+	实践。
 
-2、删除mysql
-删除命令：rpm -e --nodeps 包名
-( rpm -ev mysql-4.1.12-3.RHEL4.1 )
+### Spring Cloud Stream
 
-3、删除老版本mysql的开发头文件和库
-命令：rm -fr /usr/lib/mysql
-rm -fr /usr/include/mysql
-注意：卸载后/var/lib/mysql中的数据及/etc/my.cnf不会删除，
-如果确定没用后就手工删除
-rm -f /etc/my.cnf
-rm -fr /var/lib/mysql
-```
+	Spring Cloud Stream是创建消息驱动微服务应用的框架。Spring Cloud Stream是基于Spring 
+	Boot创建，用来建立单独的／工业级spring应用，使用spring integration提供与消息代理之间的
+	连接。数据流操作开发包，封装了与Redis,Rabbit、Kafka等发送接收消息。
 
+	一个业务会牵扯到多个任务，任务之间是通过事件触发的，这就是Spring Cloud stream要干的事了
+	
 
-### 配置固定ip
+### Spring Cloud Task
 
-```
-1.配置网络为固定ip 可以参考如下 
-# vi /etc/sysconfig/network-scripts/ifcfg-eth0 
+	Spring Cloud Task 主要解决短命微服务的任务管理，任务调度的工作，比如说某些定时任务晚上就
+	跑一次，或者某项数据分析临时就跑几次。
 
-DEVICE=eth0
-BOOTPROTO=static
-ONBOOT=yes
-NM_CONTROLLED=no
-TYPE=Ethernet
-IPADDR=10.180.8.103
-NETMASK=255.255.255.0
-GATEWAY=10.180.8.240
-HWADDR=08:00:27:A6:69:D4
-DNS1=8.8.8.8
+### Spring Cloud Zookeeper
 
+	ZooKeeper是一个分布式的，开放源码的分布式应用程序协调服务，是Google的Chubby一个开源的实
+	现，是Hadoop和Hbase的重要组件。它是一个为分布式应用提供一致性服务的软件，提供的功能包括：
+	配置维护、域名服务、分布式同步、组服务等。ZooKeeper的目标就是封装好复杂易出错的关键服务，
+	将简单易用的接口和性能高效、功能稳定的系统提供给用户。
 
-下面截取的136机器的配置
-DEVICE=eth0
-TYPE=Ethernet
-UUID=c1bda5b3-b263-4a60-9b4b-cb01fd3113a6
-ONBOOT=yes
-NM_CONTROLLED=no
-BOOTPROTO=static
-IPADDR=10.180.8.136
-NETMASK=255.255.255.0
-GATEWAY=10.180.8.240
-DNS1=8.8.8.8
-DNS2=210.22.70.3
+	操作Zookeeper的工具包，用于使用zookeeper方式的服务发现和配置管理，抱了Zookeeper的大腿。
 
-```
 
-### 设置IP和主机名映射
+### Spring Cloud Connectors
 
-```
-# vi /etc/hosts
+	Spring Cloud Connectors 简化了连接到服务的过程和从云平台获取操作的过程，有很强的扩展
+	性，可以利用Spring Cloud Connectors来构建你自己的云平台。
 
-127.0.0.1 yonyou103
-10.180.8.103 yonyou103
-```
+	便于云端应用程序在各种PaaS平台连接到后端，如：数据库和消息代理服务。
+	
 
+### Spring Cloud Starters
 
-### NFS 目录映射
+	Spring Boot式的启动项目，为Spring Cloud提供开箱即用的依赖管理。
 
-**PC1需要：**  
+### Spring Cloud CLI
 
-```
-1.启动NFS服务（/etc/init.d/nfs start ）
+	基于 Spring Boot CLI，可以让你以命令行方式快速建立云组件。
+	
+	
+# 和Spring Boot 是什么关系
 
-2.在/etc/exports
-文件内添加映射权限(被映射的目录和可以允许的地址):
-/home/dir 192.168.1.0/255.255.255.0(rw,insecure,sync,insecure_locks,no_root_squash)
-```
+	Spring Boot 是 Spring 的一套快速配置脚手架，可以基于Spring Boot 快速开发单个微服务，
+	Spring Cloud是一个基于Spring Boot实现的云应用开发工具；Spring Boot专注于快速、方便集
+	成的单个个体，Spring Cloud是关注全局的服务治理框架；Spring Boot使用了默认大于配置的理
+	念，很多集成方案已经帮你选择好了，能不配置就不配置，Spring Cloud很大的一部分是基于
+	Spring Boot来实现,可以不基于Spring Boot吗？不可以。
 
-**PC2需要：**
+	Spring Boot可以离开Spring Cloud独立使用开发项目，但是Spring Cloud离不开
+	Spring Boot，属于依赖的关系。
 
-```
-1.mkdir /home/dir_remote
+	spring -> spring booot > Spring Cloud 这样的关系。
+	
+	
+# Spring Cloud的优势
 
-2.mount 192.168.1.102:/home/dir /home/dir_remote
-```
+	微服务的框架那么多比如：dubbo、Kubernetes，为什么就要使用Spring Cloud的呢？
 
->这样在PC2上打开/home/dir_remote实际就是访问PC1的/home/dir目录了。
-
-**注意:**
->1.PC1的相应端口需要释放，确保没有防火墙阻拦  
->
->2.有问题时可以用rpcinfo -p server 检查各端口情况，确保nfs服务启动  
->
->3.磁盘根目录不能做映射
-
-
-
-### 将用户添加到sudo中
-
-```
-1. 切换到root用户权限
-# su root
-
-2. 查看/etc/sudoers文件权限，如果只读权限，修改为可写权限
-#ls -l /etc/sudoers
--r--r-----. 1 root root 4030 9月  25 00:57 /etc/sudoers
-
-# chmod 777 /etc/sudoers
-
-再查看一下：
-# ls -l /etc/sudoers
--rwxrwxrwx. 1 root root 4030 9月  25 00:57 /etc/sudoers
-
-
-3、执行vi命令，编辑/etc/sudoers文件，添加要提升权限的用户；
-在文件中找到root  ALL=(ALL) ALL，
-在该行下添加提升权限的用户信息，如：
-root    ALL=(ALL)       ALL
-user    ALL=(ALL)       ALL
-说明：格式为
-（用户名 网络中的主机=（执行命令的目标用户） 执行的命令范围）
-
-4、保存退出，并恢复/etc/sudoers的访问权限为440
-
-[root@Compile user]# chmod 440 /etc/sudoers
-[root@Compile user]# ls -l /etc/sudoers
--r--r-----. 1 root root 4030 9月  25 00:57 /etc/sudoers
-[root@Compile user]#
-
-5、切换到普通用户，测试用户权限提升功能
-
-```
-
-### 查看端口占用
-
-```
-今天发现服务器上Tomcat 8080端口起不来，老提示端口已经被占用。 
-
-使用命令： 
-
-ps -aux | grep tomcat 
-
-发现并没有8080端口的Tomcat进程。 
-
-使用命令：netstat –apn 
-
-查看所有的进程和端口使用情况。查看进程列表，其中最后一栏是PID/Program name  
-
-找到8080端口被PID为***的Java进程占用。
-
-进一步使用命令：ps -aux | grep java，
-或者直接：ps -aux | grep pid 查看 
-就可以明确知道8080端口是被哪个程序占用了！
-然后判断是否使用KILL命令干掉！
-
-```
-
-### tomcat的日志过大 通过脚本的方式来切片
-
-**先上脚本**
-
-```
-y=`date +%y`
-m=`date +%m`
-d=`date +%d`
-cd /MyData/tomcat8 （tomcat路径）
-cp /MyData/tomcat8/catalina.out  /MyData/tomcat8/catalina.out.$y$m$d
-echo 
-> catalina.out
-exit
-```
-
-**在写个任务计划每天00:00执行以下**  
-
-```
-crontab -e
-
-0   0  *  *  *  bash  /usr/local/tomcat8/apache-tomcat-8.0.21/bin/segmentation-log.sh >/dev/null 2>&1 &
-
-```
-
-**广丰脚本：**
-
-```
-#!/bin/sh
-y=`date +%y`
-m=`date +%m`
-d=`date +%d`
-h=`date +%H`
-m=`date +%M`
-cd /opt/carapp_nodes/47_node1/logs
-cp /opt/carapp_nodes/47_node1/logs/catalina.out /opt/carapp_nodes/47_node1/logs/catalina.out.$y$m$d-$h$m
-echo
-> catalina.out
-exit
-```
-
-### centos 7关闭防火墙
-
-```
-[root@rhel7 ~]# systemctl stop firewalld.service
-[root@rhel7 ~]# systemctl disable firewalld.service
-[root@rhel7 ~]# systemctl status firewalld.service
-
-```
+	产出于spring大家族，spring在企业级开发框架中无人能敌，来头很大，可以保证后续的更新、完善。
+	比如dubbo已经基本不再维护
+	
+	有Spring Boot 这个独立干将可以省很多事，大大小小的活Spring Boot都搞的挺不错。
+	作为一个微服务治理的大家伙，考虑的很全面，几乎服务治理的方方面面都考虑到了，方便开发开箱即用。
+	
+	Spring Cloud 活跃度很高，教程很丰富，遇到问题很容易找到解决方案
+	轻轻松松几行代码就完成了熔断、均衡负责、服务中心的各种平台功能
+	
+	Spring Cloud对于中小型互联网公司来说是一种福音，因为这类公司往往没有实力或者没有足够的资金
+	投入去开发自己的分布式系统基础设施，使用Spring Cloud一站式解决方案能在从容应对业务发展的同
+	时大大减少开发成本。同时，随着近几年微服务架构和Docker容器概念的火爆，也会让Spring Cloud
+	在未来越来越“云”化的软件开发风格中立有一席之地，尤其是在目前五花八门的分布式解决方案中提供了
+	标准化的、全站式的技术方案，意义可能会堪比当前Servlet规范的诞生，有效推进服务端软件系统技术
+	水平的进步。	
