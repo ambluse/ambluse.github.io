@@ -1,0 +1,341 @@
+---
+layout:     post
+title:      "SpringCloud 是什么"
+subtitle:   ""
+date:       2017-10-10
+author:     "BENJAMIN"
+header-img: "https://spring.io/img/homepage/diagram-distributed-systems.svg"
+tags:
+    - SpringCloud
+   
+---
+
+
+> 对工作中常用的一些linux命令整理，方便以后在线查看使用
+
+---
+
+
+## 文件夹权限相关
+
+### 执行权限
+
+```
+chmod 777 *.sh
+```
+
+### 修改文件夹所有者和组
+
+```
+chown -R *** /data
+chgrp -R *** /data
+```
+
+### 删除30天前的文件
+
+```
+ find /APPFile/tomcatlogs/ -mtime +30 -exec rm -rf {} \;
+```
+
+## 用户相关
+
+### 创建
+
+```
+# useradd –d /usr/sam -m sam
+
+此命令创建了一个用户sam，
+其中-d和-m选项用来为登录名sam产生一个主目录/usr/sam
+（/usr为默认的用户主目录所在的父目录）。
+
+```
+
+### 改密码
+
+```
+如果是超级用户，可以用下列形式指定任何用户的口令：
+代码:
+# passwd sam
+```
+
+
+## 系统相关
+
+### 看系统位数
+```
+uname -a
+```
+
+### 看系统版本
+```
+lsb_release -a
+```
+
+### iptables 生成文件 执行3个命令
+```
+iptables -P OUTPUT ACCEPT
+service iptables save
+service iptables restart
+
+```
+
+### 网络问题遇到：device eth0 does not seem to be present, delaying initialization
+```
+# vi /etc/sysconfig/network-scripts/ifcfg-eth0
+ifcfg-eth0的配置文件里保存了以前的MAC地址，
+就把这一行删除掉在重启网卡
+
+# /etc/udev/rules.d/70-persistent-net.rules 
+删除后重启机器，因为这个文件绑定了网卡和mac地址，
+所以换了网卡以后MAC地址变了，所以不能正常启动，
+也可以直接编辑这个配置文件把里面的网卡和mac地址修改乘对应的，
+不过这样多麻烦，直接删除重启，它会自动生成个。
+```
+
+### 修改计算机名称
+
+```
+1. # vi /etc/sysconfig/network
+
+2. # vi /etc/hosts
+将光标移动到 127.0.0.1 localhost 下面一行，
+使用命令 i 插入内容
+插入的内容为 例如：192.168.1.101 linux 
+其中 linux 为计算机名字
+修改完成后，输入命令 :wq 保存退出
+
+3. # hostname 计算机名字 
+   回车（如 hostname linux）
+   
+```
+
+### JDK环境变量
+
+**先解压：**  
+
+```
+# tar –xvf file.tar
+
+```
+
+**装java环境变量：**
+
+```
+vi /etc/profile
+#jdk
+export JAVA_HOME=/usr/local/jdk1.8.0_66
+export JRE_HOME=/usr/local/jdk1.8.0_66/jre
+export CLASSPATH=.:$JAVA_HOME/lib/dt.jar:$JAVA_HOME/lib/tools.jar:$JRE_HOME/lib:$CLASSPATH
+export PATH=$JAVA_HOME/bin:$PATH
+
+wq 保存
+
+source /etc/profile
+
+```
+
+### MySQL安装前卸载原有包
+
+```
+1、查找以前是否装有mysql
+命令：rpm -qa|grep -i mysql
+可以看到mysql的两个包：
+mysql-4.1.12-3.RHEL4.1
+mysqlclient10-3.23.58-4.RHEL4.1
+
+2、删除mysql
+删除命令：rpm -e --nodeps 包名
+( rpm -ev mysql-4.1.12-3.RHEL4.1 )
+
+3、删除老版本mysql的开发头文件和库
+命令：rm -fr /usr/lib/mysql
+rm -fr /usr/include/mysql
+注意：卸载后/var/lib/mysql中的数据及/etc/my.cnf不会删除，
+如果确定没用后就手工删除
+rm -f /etc/my.cnf
+rm -fr /var/lib/mysql
+```
+
+
+### 配置固定ip
+
+```
+1.配置网络为固定ip 可以参考如下 
+# vi /etc/sysconfig/network-scripts/ifcfg-eth0 
+
+DEVICE=eth0
+BOOTPROTO=static
+ONBOOT=yes
+NM_CONTROLLED=no
+TYPE=Ethernet
+IPADDR=10.180.8.103
+NETMASK=255.255.255.0
+GATEWAY=10.180.8.240
+HWADDR=08:00:27:A6:69:D4
+DNS1=8.8.8.8
+
+
+下面截取的136机器的配置
+DEVICE=eth0
+TYPE=Ethernet
+UUID=c1bda5b3-b263-4a60-9b4b-cb01fd3113a6
+ONBOOT=yes
+NM_CONTROLLED=no
+BOOTPROTO=static
+IPADDR=10.180.8.136
+NETMASK=255.255.255.0
+GATEWAY=10.180.8.240
+DNS1=8.8.8.8
+DNS2=210.22.70.3
+
+```
+
+### 设置IP和主机名映射
+
+```
+# vi /etc/hosts
+
+127.0.0.1 yonyou103
+10.180.8.103 yonyou103
+```
+
+
+### NFS 目录映射
+
+**PC1需要：**  
+
+```
+1.启动NFS服务（/etc/init.d/nfs start ）
+
+2.在/etc/exports
+文件内添加映射权限(被映射的目录和可以允许的地址):
+/home/dir 192.168.1.0/255.255.255.0(rw,insecure,sync,insecure_locks,no_root_squash)
+```
+
+**PC2需要：**
+
+```
+1.mkdir /home/dir_remote
+
+2.mount 192.168.1.102:/home/dir /home/dir_remote
+```
+
+>这样在PC2上打开/home/dir_remote实际就是访问PC1的/home/dir目录了。
+
+**注意:**
+>1.PC1的相应端口需要释放，确保没有防火墙阻拦  
+>
+>2.有问题时可以用rpcinfo -p server 检查各端口情况，确保nfs服务启动  
+>
+>3.磁盘根目录不能做映射
+
+
+
+### 将用户添加到sudo中
+
+```
+1. 切换到root用户权限
+# su root
+
+2. 查看/etc/sudoers文件权限，如果只读权限，修改为可写权限
+#ls -l /etc/sudoers
+-r--r-----. 1 root root 4030 9月  25 00:57 /etc/sudoers
+
+# chmod 777 /etc/sudoers
+
+再查看一下：
+# ls -l /etc/sudoers
+-rwxrwxrwx. 1 root root 4030 9月  25 00:57 /etc/sudoers
+
+
+3、执行vi命令，编辑/etc/sudoers文件，添加要提升权限的用户；
+在文件中找到root  ALL=(ALL) ALL，
+在该行下添加提升权限的用户信息，如：
+root    ALL=(ALL)       ALL
+user    ALL=(ALL)       ALL
+说明：格式为
+（用户名 网络中的主机=（执行命令的目标用户） 执行的命令范围）
+
+4、保存退出，并恢复/etc/sudoers的访问权限为440
+
+[root@Compile user]# chmod 440 /etc/sudoers
+[root@Compile user]# ls -l /etc/sudoers
+-r--r-----. 1 root root 4030 9月  25 00:57 /etc/sudoers
+[root@Compile user]#
+
+5、切换到普通用户，测试用户权限提升功能
+
+```
+
+### 查看端口占用
+
+```
+今天发现服务器上Tomcat 8080端口起不来，老提示端口已经被占用。 
+
+使用命令： 
+
+ps -aux | grep tomcat 
+
+发现并没有8080端口的Tomcat进程。 
+
+使用命令：netstat –apn 
+
+查看所有的进程和端口使用情况。查看进程列表，其中最后一栏是PID/Program name  
+
+找到8080端口被PID为***的Java进程占用。
+
+进一步使用命令：ps -aux | grep java，
+或者直接：ps -aux | grep pid 查看 
+就可以明确知道8080端口是被哪个程序占用了！
+然后判断是否使用KILL命令干掉！
+
+```
+
+### tomcat的日志过大 通过脚本的方式来切片
+
+**先上脚本**
+
+```
+y=`date +%y`
+m=`date +%m`
+d=`date +%d`
+cd /MyData/tomcat8 （tomcat路径）
+cp /MyData/tomcat8/catalina.out  /MyData/tomcat8/catalina.out.$y$m$d
+echo 
+> catalina.out
+exit
+```
+
+**在写个任务计划每天00:00执行以下**  
+
+```
+crontab -e
+
+0   0  *  *  *  bash  /usr/local/tomcat8/apache-tomcat-8.0.21/bin/segmentation-log.sh >/dev/null 2>&1 &
+
+```
+
+**广丰脚本：**
+
+```
+#!/bin/sh
+y=`date +%y`
+m=`date +%m`
+d=`date +%d`
+h=`date +%H`
+m=`date +%M`
+cd /opt/carapp_nodes/47_node1/logs
+cp /opt/carapp_nodes/47_node1/logs/catalina.out /opt/carapp_nodes/47_node1/logs/catalina.out.$y$m$d-$h$m
+echo
+> catalina.out
+exit
+```
+
+### centos 7关闭防火墙
+
+```
+[root@rhel7 ~]# systemctl stop firewalld.service
+[root@rhel7 ~]# systemctl disable firewalld.service
+[root@rhel7 ~]# systemctl status firewalld.service
+
+```
