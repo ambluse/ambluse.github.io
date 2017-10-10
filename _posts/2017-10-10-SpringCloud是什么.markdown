@@ -6,7 +6,7 @@ date:       2017-10-10
 author:     "BENJAMIN"
 header-img: "img/post-bg-whatisspringcloud.jpg"
 tags:
-    - SpringCloud
+    - SpringCloud-learn 系列
    
 ---
 
@@ -20,7 +20,10 @@ tags:
 
 **官方如是说：**
 > Spring Cloud provides tools for developers to quickly build some of the common patterns in distributed systems (e.g. configuration management, service discovery, circuit breakers, intelligent routing, micro-proxy, control bus, one-time tokens, global locks, leadership election, distributed sessions, cluster state). Coordination of distributed systems leads to boiler plate patterns, and using Spring Cloud developers can quickly stand up services and applications that implement those patterns. They will work well in any distributed environment, including the developer's own laptop, bare metal data centres, and managed platforms such as Cloud Foundry.
-> 
+
+
+大概意思：
+
 > spring cloud 为开发人员提供了快速构建分布式系统的一些工具，包括配置管理、服务发现、断路器、路由、微代理、事件总线、全局锁、决策竞选、分布式会话等等。它运行环境简单，可以在开发人员的电脑上跑
 
 **上面提到的工具后续我们会一一了解**
@@ -240,3 +243,8 @@ tags:
 	在未来越来越“云”化的软件开发风格中立有一席之地，尤其是在目前五花八门的分布式解决方案中提供了
 	标准化的、全站式的技术方案，意义可能会堪比当前Servlet规范的诞生，有效推进服务端软件系统技术
 	水平的进步。	
+
+
+>后续springcloud系列会基于最新release的版本Dalston来构建，对应spring boot 1.5.x
+>
+>The Dalston and Edgware release trains build on Spring Boot 1.5.x, and are not expected to work with Spring Boot 2.0.x.
