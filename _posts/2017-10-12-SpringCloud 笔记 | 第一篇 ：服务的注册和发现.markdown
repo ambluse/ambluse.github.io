@@ -2,7 +2,7 @@
 layout:     post
 title:      "SpringCloud 笔记 | 第一篇"
 subtitle:   "简单的注册中心"
-date:       2017-10-10
+date:       2017-10-12
 author:     "BENJAMIN"
 header-img: ""
 tags:
@@ -107,4 +107,27 @@ eureka.client.fetch-registry=false
       
 ```
 
-启动，访问 localhost:8761 显示正常
+现在比较流行使用yml配置，后面我们也都使用这种方式：
+修改配置文件类型为.yml
+
+```
+server:
+  port: 8761
+
+eureka:
+  instance:
+    hostname: localhost
+  client:
+    register-with-eureka: false
+    fetch-registry: false
+
+```
+
+启动，访问 localhost:8761 显示正常。
+
+解释一下配置的属性：  
+> eureka.client.register-with-eureka 表示是否将自己注册到eureka server，默认是ture  
+> eureka.client.fetch-registry 表示是否要从eureka server中获取注册信息 默认为true  
+> 单节点的情况以上配置为false，如果集群我们后面需要关注下这两个配置
+
+通过控制台我们会看到暂时还没有服务注册上来，后面我们再写一个服务来注册到注册中心上。
