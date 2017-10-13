@@ -84,6 +84,6 @@ featured-condition-size: 2             # A tag will be featured if the size of i
 friends: [
     {
         title: "benjamin's github",
-        href: "http://ambluse.github.io"
+        href: "https://github.com/ambluse"
     }
 ]
