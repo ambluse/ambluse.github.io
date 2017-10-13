@@ -1,7 +1,7 @@
 ---
 layout:     post
 title:      "SpringCloud 笔记 | 第二篇"
-subtitle:   "优雅使用springboot"
+subtitle:   "优雅的使用springboot-mybatis"
 date:       2017-10-12
 author:     "BENJAMIN"
 header-img: ""
