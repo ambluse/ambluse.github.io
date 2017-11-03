@@ -429,3 +429,5 @@ public class BootMApplicationTests {
 ```
 
 测试完毕！
+
+demo再此：[https://github.com/ambluse/SpringCloud-learn/tree/master/springboot%20chapter3/boot-multi](https://github.com/ambluse/SpringCloud-learn/tree/master/springboot%20chapter3/boot-multi)
