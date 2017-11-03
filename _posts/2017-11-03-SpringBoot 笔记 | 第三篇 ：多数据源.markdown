@@ -304,7 +304,9 @@ public class DataSource2Config {
 
 ## 测试
 
-同样使用generatorConfig来生成我们dao层的代码，对xml稍作调整  
+先建两个database后面用来连。
+
+然后使用generatorConfig来生成我们dao层的代码，对xml稍作调整  
 **generatorConfig.xml：**
 
 需要生成连接那个就解开哪个的注释
