@@ -7,8 +7,7 @@ author:     "benjamin"
 header-img: "img/post-bg-js-version.jpg"
 tags:
     - 服务器相关
-    - MySQL  
-    - 笔记
+    - MySQL
    
 ---
 

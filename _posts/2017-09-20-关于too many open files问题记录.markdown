@@ -7,9 +7,6 @@ author:     "BENJAMIN"
 header-img: ""
 tags:
     - 服务器相关
-    - linux  
-    - 文件流
-    - too many open files
    
 ---
 
