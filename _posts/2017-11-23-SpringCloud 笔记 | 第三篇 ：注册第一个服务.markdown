@@ -285,5 +285,6 @@ http://localhost:8081/c-user/1
 
 浏览器敲一下，返回了用户名称，看下log就明白调用流程了
 
+演示的代码在[这](https://github.com/ambluse/SpringCloud-learn/tree/master/springcloud%20chapter3)
 
 
