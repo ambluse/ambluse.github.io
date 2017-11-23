@@ -35,12 +35,14 @@ yum -y install gcc gcc-c++ gcc-g77 kernel-devel autoconf automake make cmake per
 
 # 2. 拷贝文件
 --
-**拷贝文件 `boost_1_59.tar.gz`和 `mysql-5.6.25.tar.gz` 到tmp目录  
+**拷贝文件 `boost_1_59.tar.gz`和 `mysql-5.6.26.tar.gz` 到/u01目录  
 执行解压:**
+[安装文件在这](https://github.com/ambluse/install-files/tree/master/MySQL%E7%9B%B8%E5%85%B3)
 
 ```
-tar -zvxf /tmp/boost_1_59.tar.gz
-tar -zvxf /tmp/mysql-5.6.25.tar.gz
+cd /u01
+tar -zxvf boost_1_59_0.tar.gz
+tar -zxvf mysql-5.6.26.tar.gz
 ```
 
 # 3.目录准备
@@ -80,7 +82,7 @@ mv boost_1_59_0/ boost
 mkdir /u01/mysql
 chmod -R 775 /u01/
 chown -R mysql.dba /u01/
-cd /u01/mysql-5.6.25/
+cd /u01/mysql-5.6.26/
 ```
 **进行编译和安装：**
 
@@ -96,9 +98,15 @@ make -j 4 && make install -j 4
 ```	
 cd /u01/my3306/
 vi my.cnf  
-/u01/mysql/scripts/mysql_install_db --defaults-file=/u01/my3308/my.cnf --datadir=/u01/my3308/data/  --basedir=/u01/mysql/ --user=mysql
 ```
 >my.cnf 配置的内容见附录
+
+```
+/u01/mysql/scripts/mysql_install_db --defaults-file=/u01/my3306/my.cnf --datadir=/u01/my3306/data/  --basedir=/u01/mysql/ --user=mysql
+
+```
+
+切换用户
 
 ```
 su - mysql
@@ -110,14 +118,32 @@ cd
 vi .bash_profile  
 ```
 >bash_profile 内容也在最后
+>注意运维脚本放到 mysql/local/bin中，这个在bash中也有配bin的目录，关注下。
+>记得改脚本的密码
+
+
 
 ```
 source .bash_profile
 
-mysqld_mm  起动数据库
+起动数据库
+mysqld_mm  
+
+切换到库
+my3306 
+
 mysql -uroot -p     这个时候没有密码   进去执行下面的语句  这个时密码就是root@1234了
 
-ALTER USER 'root'@'localhost' identified by  'root@1234';
+
+## 这个报错ALTER USER 'root'@'localhost' identified by  'root@1234';
+## 用这个语句改
+use mysql
+UPDATE user SET Password = PASSWORD('root@1234') WHERE user = 'root';
+FLUSH PRIVILEGES;
+
+
+
+
 create user dbadmin@'localhost' identified by 'root@1234';
 create user test@'%' identified by 'Pass1234';
 grant all privileges on *.* to 'test'@'%';
@@ -138,7 +164,7 @@ UPDATE mysql.user SET Password=PASSWORD('Pass1234'),password_expired='N' WHERE u
 
 create database xxx;
 ```
-
+改账号报错有时候修改为不是localhost 为 % 可以解决 应该和机器有关
 
 # 6.配置附录
 

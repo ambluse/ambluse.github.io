@@ -28,10 +28,10 @@ pom.xml 配置关键信息如下:
 	<parent>
 		<groupId>org.springframework.boot</groupId>
 		<artifactId>spring-boot-starter-parent</artifactId>
-		<version>1.5.7.RELEASE</version>
-		<relativePath/> <!-- lookup parent from repository -->
+		<version>1.5.8.RELEASE</version>
+		<relativePath /> <!-- lookup parent from repository -->
 	</parent>
-
+	
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
@@ -73,7 +73,7 @@ pom.xml 配置关键信息如下:
 		</plugins>
 	</build>
 	
-*可以看到使用的是spring boot 1.5.7.RELEASE 和 spring cloud Dalston.SR4*
+*可以看到使用的是spring boot 1.5.8.RELEASE 和 spring cloud Dalston.SR4*
 
 
 通过@EnableEurekaServer注解启动一个服务注册中心提供给其他应用进行对话。这一步非常的简单，只需要在一个普通的Spring Boot应用中添加这个注解就能开启此功能，如下面：
@@ -99,15 +99,22 @@ public class EurekaServerApplication {
 application.properties 配置如下
 
 ```
-server.port: 8761
+spring.application.name=spring-cloud-eureka
 
-eureka.instance.hostname: localhost
+server.port=8761
 eureka.client.register-with-eureka=false
 eureka.client.fetch-registry=false
+
+eureka.client.serviceUrl.defaultZone=http://localhost:${server.port}/eureka/
       
 ```
 
-现在比较流行使用yml配置，后面我们也都使用这种方式：
+eureka.client.register-with-eureka ：表示是否将自己注册到Eureka Server，默认为true。   
+eureka.client.fetch-registry ：表示是否从Eureka Server获取注册信息，默认为true。   
+eureka.client.serviceUrl.defaultZone ：设置与Eureka Server交互的地址，查询服务和注册服务都需要依赖这个地址。默认是http://localhost:8761/eureka ；多个地址可使用 , 分隔。
+
+
+现在比较流行使用yml配置
 修改配置文件类型为.yml
 
 ```
