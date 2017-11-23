@@ -2,7 +2,7 @@
 layout:     post
 title:      "SpringCloud 笔记 | 第二篇"
 subtitle:   "高可用的注册中心"
-date:       2017-11-23
+date:       2017-11-22
 author:     "BENJAMIN"
 header-img: ""
 tags:
