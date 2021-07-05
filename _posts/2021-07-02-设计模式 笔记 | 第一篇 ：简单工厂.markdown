@@ -6,7 +6,7 @@ date:       2021-07-02
 author:     "BENJAMIN"
 header-img: ""
 tags:
-    - 设计模式 系列
+    - 设计模式系列
 ---
 
 ## 介绍
